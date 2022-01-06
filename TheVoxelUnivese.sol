@@ -40,7 +40,7 @@ contract TheVoxelUniverse is ERC721, Ownable {
         require(publicSaleActive, "Sale must be active to mint");
         require((MINT_PRICE * numberOfMints) == msg.value, "Invalid ETH value sent");
         require((batchTotalMintsCounter[batchCounter] + numberOfMints) <= BATCH_SIZE, "Reached max supply for this collection");
-        require((publicSaleMintsTracker[msg.sender][batchCounter] + numberOfMints) < maxPublicMintsPerWalletForBatch[batchCounter], "You can't mint more for this batch");
+        require((publicSaleMintsTracker[msg.sender][batchCounter] + numberOfMints) <= maxPublicMintsPerWalletForBatch[batchCounter], "You can't mint more for this batch");
 
         for (uint i = 0; i < numberOfMints; i++) {
             _safeMint(msg.sender, totalSupply + i);
@@ -56,7 +56,7 @@ contract TheVoxelUniverse is ERC721, Ownable {
         require(presaleActive, "Sale must be active to mint");
         require((MINT_PRICE * numberOfMints) == msg.value, "Invalid ETH value sent");
         require((batchTotalMintsCounter[batchCounter] + numberOfMints) <= BATCH_SIZE, "Reached max supply for this collection");
-        require((presaleMintsTracker[msg.sender][batchCounter] + numberOfMints) < maxPresaleMintsPerWalletForBatch[batchCounter], "You can't mint more for this batch");
+        require((presaleMintsTracker[msg.sender][batchCounter] + numberOfMints) <= maxPresaleMintsPerWalletForBatch[batchCounter], "You can't mint more for this batch");
 
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
         require(MerkleProof.verify(_merkleProof, merkleRoot, leaf), "Invalid proof");
